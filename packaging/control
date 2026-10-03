@@ -1,6 +1,6 @@
 Package: com.romerson.tecfixes
 Name: Tec Fixes
-Version: 0.1.1
+Version: 0.2.1
 Architecture: iphoneos-arm
 Description: Correções e otimizações do Tec Concursos para o WebKit do iOS 12, como scripts do Polyfills.
 Maintainer: Romerson Serejo
