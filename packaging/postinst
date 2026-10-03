@@ -1,0 +1,12 @@
+#!/bin/sh
+# O Polyfills lê os scripts uma vez por processo; reinicia o Safari para valerem já.
+# killall nem sempre existe no jailbreak; tenta ps + kill como alternativa.
+if killall -9 MobileSafari 2>/dev/null; then
+  exit 0
+fi
+pids=$(ps -A -o pid= -o comm= 2>/dev/null | awk '/MobileSafari$/ { print $1 }')
+if [ -n "$pids" ] && kill -9 $pids 2>/dev/null; then
+  exit 0
+fi
+echo "Tec Fixes: feche o Safari pelo seletor de apps para aplicar os scripts."
+exit 0
