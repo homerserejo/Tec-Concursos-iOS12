@@ -1,0 +1,14 @@
+# Local captures of the Tec site (personal account data)
+*.har
+captures/
+
+# Build output
+*.deb
+*.ipa
+packages/
+.theos/
+.DS_Store
+__pycache__/
+
+# Python
+.venv/
