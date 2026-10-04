@@ -1,0 +1,6 @@
+#!/bin/sh
+# Tira o ícone da tela de início depois de remover o app.
+if [ "$1" = remove ] || [ "$1" = purge ]; then
+  uicache 2>/dev/null
+fi
+exit 0

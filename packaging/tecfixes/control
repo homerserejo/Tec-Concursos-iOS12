@@ -1,0 +1,12 @@
+Package: com.romerson.tecfixes
+Name: TecDuck para Safari
+Version: @VERSION@
+Architecture: iphoneos-arm
+Description: Correções do Tec Concursos para o Safari do iOS 12: cadernos que abriam em branco, texto das aulas sobreposto com zoom, vídeos no Opaline e cookies só essenciais.
+Maintainer: Romerson Serejo
+Author: Romerson Serejo
+Section: Tweaks
+Depends: com.ps.polyfills
+Homepage: https://github.com/homerserejo/TecDuck
+Depiction: @REPO_URL@depictions/com.romerson.tecfixes.html
+Icon: @REPO_URL@CydiaIcon.png

@@ -1,0 +1,4 @@
+#!/bin/sh
+# Registra o app na tela de início (uicache antigo não tem -p).
+uicache -p /Applications/TecDuck.app 2>/dev/null || uicache 2>/dev/null
+exit 0

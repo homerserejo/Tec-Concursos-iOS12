@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Empacota polyfills/ como .deb que instala os scripts em
+# Empacota polyfills/ como o .deb "TecDuck para Safari", que instala os scripts em
 # /Library/Application Support/Polyfills (pacote com.ps.polyfills).
 # Uso: tools/build-deb.sh  ->  packages/com.romerson.tecfixes_<versão>_iphoneos-arm.deb
 set -euo pipefail
@@ -18,12 +18,11 @@ if command -v node >/dev/null; then
   find "$dest" -name '*.js' -print0 | while IFS= read -r -d '' js; do node --check "$js" || exit 1; done
 fi
 
-cp "$root/packaging/control" "$root/packaging/postinst" "$root/packaging/postrm" "$stage/DEBIAN/"
-chmod 0755 "$stage/DEBIAN/postinst" "$stage/DEBIAN/postrm"
+"$root/tools/deb-control.sh" tecfixes "$stage/DEBIAN"
 find "$stage" -type d -exec chmod 0755 {} +
 find "$dest" -type f -exec chmod 0644 {} +
 
-version="$(sed -n 's/^Version: //p' "$root/packaging/control")"
+version="$(cat "$root/VERSION")"
 mkdir -p "$root/packages"
 out="$root/packages/com.romerson.tecfixes_${version}_iphoneos-arm.deb"
 # gzip: o dpkg dos jailbreaks do iOS 12 não abre zstd.
