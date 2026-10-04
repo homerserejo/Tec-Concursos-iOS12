@@ -1,13 +1,20 @@
 # Publica uma versão: ao enviar a tag v<VERSION>, compila o app e os pacotes no Linux (mesmo Theos,
 # toolchain e SDK do desenvolvimento), anexa .deb e .ipa à Release do GitHub e atualiza o
 # repositório APT no GitHub Pages (Cydia, Sileo, Zebra).
-# "Run workflow" manual só compila e guarda os pacotes como artefato, sem publicar.
+# "Run workflow" manual compila e guarda os pacotes como artefato; com "publish" marcado, republica a
+# versão atual (correção simples não sobe a versão): move a tag v<VERSION> para este commit,
+# substitui os arquivos da Release e atualiza o Pages.
 name: Release
 
 on:
   push:
     tags: ['v*']
   workflow_dispatch:
+    inputs:
+      publish:
+        description: Republicar a versão de VERSION com este commit (correção sem subir a versão)
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -19,6 +26,8 @@ concurrency:
   cancel-in-progress: false
 
 env:
+  # Publica no push da tag ou na execução manual com publish marcado (só a partir do main).
+  PUBLISH: ${{ startsWith(github.ref, 'refs/tags/') || (inputs.publish && github.ref == 'refs/heads/main') }}
   THEOS: ${{ github.workspace }}/theos
   THEOS_COMMIT: dd5c14bb9d91311e221d51b5bfb8c9e5948156db
   TOOLCHAIN_URL: https://github.com/L1ghtmann/llvm-project/releases/download/test-210562a/iOSToolchain-x86_64.tar.xz
@@ -81,20 +90,30 @@ jobs:
           name: packages
           path: packages/
 
+      - name: Move a tag v<VERSION> para este commit
+        if: github.event_name == 'workflow_dispatch' && env.PUBLISH == 'true'
+        run: |
+          tag="v$(cat VERSION)"
+          echo "TAG=$tag" >> "$GITHUB_ENV"
+          git tag -f "$tag"
+          git push -f origin "refs/tags/$tag"
+
       - name: Prepara o site do repositório
-        if: startsWith(github.ref, 'refs/tags/')
+        if: env.PUBLISH == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: site
 
       - name: Publica a Release
-        if: startsWith(github.ref, 'refs/tags/')
+        if: env.PUBLISH == 'true'
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ env.TAG || github.ref_name }}
           files: packages/*
+          overwrite_files: true
           generate_release_notes: true
           body: |
-            **Repositório para Cydia, Sileo e Zebra:** https://homerserejo.github.io/TecDuck/
+            **Repositório para Cydia, Sileo e Zebra:** https://homerserejo.github.io/tecduck/
             (adicione também o do Polyfills: https://poomsmart.github.io/repo/).
 
             - `com.romerson.tecduck_*.deb`: o app TecDuck, para instalar por loja de tweaks ou Filza.
@@ -102,7 +121,7 @@ jobs:
             - `TecDuck_*.ipa`: o app para instalar com AppSync Unified, sem loja.
 
   deploy:
-    if: startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs/tags/') || (inputs.publish && github.ref == 'refs/heads/main')
     needs: build
     runs-on: ubuntu-24.04
     environment:

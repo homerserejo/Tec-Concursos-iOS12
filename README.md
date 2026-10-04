@@ -15,9 +15,9 @@ share the same JavaScript fixes:
 In Cydia, Sileo or Zebra, add these two sources, then install **TecDuck**:
 
 1. `https://poomsmart.github.io/repo/` (Polyfills, a dependency the package manager installs for you);
-2. `https://homerserejo.github.io/TecDuck/`, or open that address on the iPad for one-tap buttons.
+2. `https://homerserejo.github.io/tecduck/`, or open that address on the iPad for one-tap buttons.
 
-Each [release](https://github.com/homerserejo/TecDuck/releases) also carries the `.deb` files and a
+Each [release](https://github.com/homerserejo/tecduck/releases) also carries the `.deb` files and a
 `TecDuck_<version>.ipa` for AppSync Unified. The `.deb` and the `.ipa` share the bundle ID: delete
 one before installing the other.
 
@@ -47,7 +47,7 @@ for the `.ipa`; Opaline (optional) for the lessons' videos.
 ### 1. Clone and prepare the USB tools
 
 ```bash
-git clone https://github.com/homerserejo/TecDuck.git
+git clone https://github.com/homerserejo/tecduck.git
 cd TecDuck
 python3 -m venv .venv
 .venv/bin/pip install -r tools/requirements.txt
@@ -99,15 +99,21 @@ effects; `tlsfix` does nothing there (TLS runs in `com.apple.WebKit.Networking`)
 The version lives in [VERSION](VERSION); the build scripts write it into both packages and the app.
 
 ```bash
-echo 1.0.1 > VERSION
-git commit -am "..." && git tag v1.0.1 && git push && git push --tags
+echo 1.0.2 > VERSION
+git commit -am "..." && git tag v1.0.2 && git push && git push --tags
 ```
 
 The [Release workflow](.github/workflows/release.yml) builds on Ubuntu with the same Theos commit,
 toolchain and SDK, attaches the `.deb` and `.ipa` files to the GitHub Release and publishes the APT
 repository (`tools/build-repo.py`) to GitHub Pages. It fails if the tag doesn't match `VERSION`.
-Once per repository: Settings → Pages → Source: **GitHub Actions**. Running the workflow by hand
-only builds and keeps the packages as an artifact.
+Once per repository: Settings → Pages → Source: **GitHub Actions**, and a `v*` tag rule in
+Settings → Environments → github-pages.
+
+**Version rule:** bump `VERSION` only for a new feature or a bug reported in an issue. A simple
+implementation fix keeps the version: commit it to `main` and run the workflow by hand (Actions →
+Release → Run workflow) with **publish** checked. It moves the `v<VERSION>` tag to that commit,
+replaces the release files and updates the repository. Without **publish**, a manual run only builds
+and keeps the packages as an artifact.
 
 ## Customizing
 

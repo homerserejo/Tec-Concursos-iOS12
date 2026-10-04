@@ -15,9 +15,9 @@ compartilham as mesmas correções em JavaScript:
 No Cydia, no Sileo ou no Zebra, adicione estas duas fontes e instale o **TecDuck**:
 
 1. `https://poomsmart.github.io/repo/` (Polyfills, uma dependência que a loja instala junto);
-2. `https://homerserejo.github.io/TecDuck/`, ou abra esse endereço no iPad para usar os botões.
+2. `https://homerserejo.github.io/tecduck/`, ou abra esse endereço no iPad para usar os botões.
 
-Cada [release](https://github.com/homerserejo/TecDuck/releases) também traz os `.deb` e um
+Cada [release](https://github.com/homerserejo/tecduck/releases) também traz os `.deb` e um
 `TecDuck_<versão>.ipa` para o AppSync Unified. O `.deb` e o `.ipa` usam o mesmo identificador:
 apague um antes de instalar o outro.
 
@@ -47,7 +47,7 @@ para o `.ipa`; o Opaline (opcional) para os vídeos das aulas.
 ### 1. Clonar e preparar as ferramentas de USB
 
 ```bash
-git clone https://github.com/homerserejo/TecDuck.git
+git clone https://github.com/homerserejo/tecduck.git
 cd TecDuck
 python3 -m venv .venv
 .venv/bin/pip install -r tools/requirements.txt
@@ -99,15 +99,21 @@ colaterais; o `tlsfix` não faz nada ali (o TLS roda no `com.apple.WebKit.Networ
 A versão fica em [VERSION](VERSION); os scripts de build a gravam nos dois pacotes e no app.
 
 ```bash
-echo 1.0.1 > VERSION
-git commit -am "..." && git tag v1.0.1 && git push && git push --tags
+echo 1.0.2 > VERSION
+git commit -am "..." && git tag v1.0.2 && git push && git push --tags
 ```
 
 O [workflow de release](.github/workflows/release.yml) compila no Ubuntu com o mesmo commit do Theos,
 a mesma toolchain e o mesmo SDK, anexa os `.deb` e o `.ipa` à Release do GitHub e publica o
 repositório APT (`tools/build-repo.py`) no GitHub Pages. Ele falha se a tag não bater com o
-`VERSION`. Uma vez por repositório: Settings → Pages → Source: **GitHub Actions**. Rodar o workflow
-à mão só compila e guarda os pacotes como artefato.
+`VERSION`. Uma vez por repositório: Settings → Pages → Source: **GitHub Actions**, e uma regra de tag `v*`
+em Settings → Environments → github-pages.
+
+**Regra de versão:** o `VERSION` só sobe com funcionalidade nova ou com bug relatado numa issue. Uma
+correção simples de implementação mantém a versão: faça o commit no `main` e rode o workflow à mão
+(Actions → Release → Run workflow) com **publish** marcado. Ele move a tag `v<VERSION>` para esse
+commit, substitui os arquivos da Release e atualiza o repositório. Sem **publish**, a execução manual
+só compila e guarda os pacotes como artefato.
 
 ## Personalizar
 

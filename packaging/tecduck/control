@@ -7,6 +7,6 @@ Maintainer: Romerson Serejo
 Author: Romerson Serejo
 Section: Utilities
 Depends: firmware (>= 12.0), com.ps.polyfills
-Homepage: https://github.com/homerserejo/TecDuck
+Homepage: https://github.com/homerserejo/tecduck
 Depiction: @REPO_URL@depictions/com.romerson.tecduck.html
 Icon: @REPO_URL@CydiaIcon.png

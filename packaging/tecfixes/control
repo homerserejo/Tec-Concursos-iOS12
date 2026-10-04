@@ -7,6 +7,6 @@ Maintainer: Romerson Serejo
 Author: Romerson Serejo
 Section: Tweaks
 Depends: com.ps.polyfills
-Homepage: https://github.com/homerserejo/TecDuck
+Homepage: https://github.com/homerserejo/tecduck
 Depiction: @REPO_URL@depictions/com.romerson.tecfixes.html
 Icon: @REPO_URL@CydiaIcon.png

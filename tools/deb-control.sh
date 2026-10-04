@@ -7,7 +7,7 @@ set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
 src="$root/packaging/$1"
 debian="$2"
-repo_url="${REPO_URL:-https://homerserejo.github.io/TecDuck/}"
+repo_url="${REPO_URL:-https://homerserejo.github.io/tecduck/}"
 
 mkdir -p "$debian"
 sed -e "s|@VERSION@|$(cat "$root/VERSION")|g" -e "s|@REPO_URL@|$repo_url|g" "$src/control" > "$debian/control"

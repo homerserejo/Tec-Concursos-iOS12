@@ -26,10 +26,11 @@ cookie de sessão.
 | Tema | Decisão |
 |---|---|
 | Entrega | Fase 1: scripts do Polyfills no Safari. Fase 2: app WebKit próprio (Theos, compilado no Linux) reaproveitando os mesmos scripts |
-| Repositório | [homerserejo/TecDuck](https://github.com/homerserejo/TecDuck) (GPL-2.0; antes Tec-Concursos-iOS12); o Tec-Blinker e a VM ficam parados como plano B |
+| Repositório | [homerserejo/tecduck](https://github.com/homerserejo/tecduck) (GPL-2.0; antes Tec-Concursos-iOS12); o Tec-Blinker e a VM ficam parados como plano B |
 | Vídeos do YouTube | Abrir no Opaline: `ytlite://watch?v=<ID>[&t=<s>]` |
 | Commits | Autoria só de **Romerson Serejo**; sem `Co-Authored-By` do Claude, sem URL de sessão |
 | Mensagens de commit e PR | Narrativa do porquê: o problema, a intenção e o que a mudança corrigiu. Não listar o que foi feito; o diff já mostra |
+| Versão | Sobe só com funcionalidade nova ou bug vindo de issue. Correção simples de implementação mantém a versão e republica a mesma (workflow manual com `publish`) |
 
 ## Estrutura do repositório
 ```
@@ -137,7 +138,7 @@ Feito em 2026-10-04; instalado no iPad e em uso.
   reproduziu (passo 5 da Fase 1).
 
 ## Release 1.0.0 (2026-10-04)
-- **Distribuição:** repositório APT no GitHub Pages (`https://homerserejo.github.io/TecDuck/`) para
+- **Distribuição:** repositório APT no GitHub Pages (`https://homerserejo.github.io/tecduck/`) para
   Cydia, Sileo e Zebra. O app vira o pacote `com.romerson.tecduck`, instalado em `/Applications`, sem
   AppSync; `Depends: com.ps.polyfills` faz a loja instalar o Polyfills junto, desde que o repositório do
   PoomSmart esteja adicionado (a página do repositório pede isso primeiro). O `.ipa` segue na Release
@@ -146,7 +147,9 @@ Feito em 2026-10-04; instalado no iPad e em uso.
 - **Pipeline:** `.github/workflows/release.yml` compila no Ubuntu com o Theos fixo no commit
   `dd5c14bb`, a toolchain `test-210562a` e o SDK 12.4 (o mesmo do desenvolvimento, conferido com um
   build local nessas condições), publica a Release e o Pages. Falha se a tag não bater com `VERSION`.
-- **Nome:** o repositório passa a se chamar TecDuck.
+- **Nome:** o repositório passa a se chamar `tecduck`, em minúsculas: o caminho do GitHub Pages é o nome
+  do repositório e diferencia maiúsculas; com `TecDuck`, o Sileo pedia `/tecduck/` e recebia 404. A
+  correção republicou a própria 1.0.0 com os endereços em minúsculas (regra de versão).
 
 ## Verificação
 - Fase 1: com o `.deb` instalado, fazer login, abrir pastas, resolver 50 questões seguidas, abrir

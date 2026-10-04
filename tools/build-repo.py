@@ -21,7 +21,7 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parent.parent
-REPO_URL = os.environ.get("REPO_URL", "https://homerserejo.github.io/TecDuck/")
+REPO_URL = os.environ.get("REPO_URL", "https://homerserejo.github.io/tecduck/")
 VERSION = (ROOT / "VERSION").read_text().strip()
 
 
