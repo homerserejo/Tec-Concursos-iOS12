@@ -14,7 +14,7 @@ share the same JavaScript fixes:
 
 | Problem on iOS 12 | Fix |
 |---|---|
-| Folders and notebooks open blank: `postMessage` without `targetOrigin` throws and aborts AngularJS | Polyfill that defaults the origin to `"/"` (same origin, as in the spec) and accepts `{ targetOrigin, transfer }`; also proposed to Polyfills |
+| Folders and notebooks open blank: `postMessage` without `targetOrigin` throws and aborts AngularJS | Polyfill that defaults the origin to `"/"` (same origin, as in the spec) and accepts `{ targetOrigin, transfer }`; also proposed to Polyfills ([#29](https://github.com/PoomSmart/Polyfills/pull/29)) |
 | Lesson text overlaps with the site's text zoom (line height fixed in `rem`) | Unitless line heights that follow the font size |
 | Each video lesson embeds the YouTube player (~18 MB of JS) | Card that opens the video in Opaline (`ytlite://`) |
 | Cookie banner on every page | Answered automatically with "essential only", without a reload |

@@ -14,7 +14,7 @@ compartilham as mesmas correções em JavaScript:
 
 | Problema no iOS 12 | Correção |
 |---|---|
-| Pastas e cadernos abrem em branco: `postMessage` sem `targetOrigin` lança erro e aborta o AngularJS | Polyfill que assume `"/"` como origem (mesma origem, como na especificação) e aceita `{ targetOrigin, transfer }`; também proposto ao Polyfills |
+| Pastas e cadernos abrem em branco: `postMessage` sem `targetOrigin` lança erro e aborta o AngularJS | Polyfill que assume `"/"` como origem (mesma origem, como na especificação) e aceita `{ targetOrigin, transfer }`; também proposto ao Polyfills ([#29](https://github.com/PoomSmart/Polyfills/pull/29)) |
 | Texto das aulas se sobrepõe com o zoom de texto do site (altura da linha fixa em `rem`) | Alturas de linha sem unidade, que acompanham a fonte |
 | Cada videoaula embute o player do YouTube (~18 MB de JS) | Cartão que abre o vídeo no Opaline (`ytlite://`) |
 | Banner de cookies em toda página | Respondido sozinho com "Somente essenciais", sem recarregar |

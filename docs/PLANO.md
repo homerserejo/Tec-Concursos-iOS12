@@ -90,7 +90,7 @@ antigo que ela); por isso os scripts do Tec ficam em `base/` com prefixo `tec.` 
 ### Contribuição ao Polyfills (2026-10-04)
 O `targetOrigin` obrigatório não é só do iOS 12: até o WebKit 608 (iOS 13.3) ele é exigido, e a forma
 `postMessage(msg, { targetOrigin, transfer })` só chegou no WebKit 609 (iOS 13.4). A correção virou um
-polyfill genérico, proposto ao PoomSmart/Polyfills como `scripts/13.4/Window.postMessage.options.js`:
+polyfill genérico, proposto ao PoomSmart/Polyfills no [PR #29](https://github.com/PoomSmart/Polyfills/pull/29) como `scripts/13.4/Window.postMessage.options.js`:
 padrão `"/"` (só a mesma origem, como na especificação; o `'*'` anterior entregava a qualquer origem),
 objeto de opções aceito e detecção por `postMessage.length`. Testado em 10 casos no iPad. Aqui ele vive
 como `postMessage.options.js`, com outro nome para não conflitar no dpkg com o pacote do Polyfills.
