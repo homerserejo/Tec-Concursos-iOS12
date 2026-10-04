@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TecDuck</title>
+<style>
+body{margin:0;background:#f2f2f7;color:#1c1c1e;font:16px/1.5 -apple-system,Helvetica,Arial,sans-serif}
+main{max-width:640px;margin:0 auto;padding:16px}
+h1{font-size:24px;margin:8px 0}h2{font-size:18px;margin:24px 0 8px}
+.card{background:#fff;border-radius:12px;padding:16px;margin:12px 0}
+.top{display:flex;align-items:center}.top img{width:60px;height:60px;border-radius:14px;margin-right:12px}
+.muted{color:#6e6e73;font-size:14px}
+a.btn{display:block;text-align:center;background:#007aff;color:#fff;text-decoration:none;border-radius:10px;padding:12px;margin:8px 0;font-weight:600}
+a.alt{background:#e5e5ea;color:#007aff}
+code{background:#e5e5ea;border-radius:4px;padding:1px 4px;font-size:14px;word-break:break-all}
+ul{padding-left:20px;margin:4px 0}li{margin:4px 0}
+</style>
+</head>
+<body>
+<main>
+  <div class="card top">
+    <img src="CydiaIcon.png" alt="">
+    <div><h1>TecDuck</h1><div class="muted">Tec Concursos leve para o iOS 12 · versão @VERSION@</div></div>
+  </div>
+
+  <div class="card">
+    <h2>1. Adicione o repositório do Polyfills</h2>
+    <p class="muted">O TecDuck depende do Polyfills, do PoomSmart. A loja só consegue instalá-lo junto se conhecer este repositório.</p>
+    <a class="btn" href="cydia://url/https://cydia.saurik.com/api/share#?source=https://poomsmart.github.io/repo/">Adicionar no Cydia</a>
+    <a class="btn alt" href="sileo://source/https://poomsmart.github.io/repo/">Adicionar no Sileo</a>
+    <a class="btn alt" href="zbra://sources/add/https://poomsmart.github.io/repo/">Adicionar no Zebra</a>
+    <p class="muted">Endereço: <code>https://poomsmart.github.io/repo/</code></p>
+  </div>
+
+  <div class="card">
+    <h2>2. Adicione este repositório</h2>
+    <a class="btn" href="cydia://url/https://cydia.saurik.com/api/share#?source=@REPO_URL@">Adicionar no Cydia</a>
+    <a class="btn alt" href="sileo://source/@REPO_URL@">Adicionar no Sileo</a>
+    <a class="btn alt" href="zbra://sources/add/@REPO_URL@">Adicionar no Zebra</a>
+    <p class="muted">Endereço: <code>@REPO_URL@</code></p>
+  </div>
+
+  <div class="card">
+    <h2>3. Instale</h2>
+    <ul>
+      <li><a href="depictions/com.romerson.tecduck.html"><b>TecDuck</b></a>: o app.</li>
+      <li><a href="depictions/com.romerson.tecfixes.html"><b>TecDuck para Safari</b></a>: as mesmas correções no Safari (opcional).</li>
+    </ul>
+    <p class="muted">Código-fonte e instruções: <a href="https://github.com/homerserejo/TecDuck">github.com/homerserejo/TecDuck</a>. Sem vínculo com o Tec Concursos.</p>
+  </div>
+</main>
+</body>
+</html>

@@ -12,3 +12,6 @@ __pycache__/
 
 # Python
 .venv/
+
+# Site do repositório APT gerado por tools/build-repo.py
+site/

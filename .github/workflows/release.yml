@@ -1,0 +1,114 @@
+# Publica uma versão: ao enviar a tag v<VERSION>, compila o app e os pacotes no Linux (mesmo Theos,
+# toolchain e SDK do desenvolvimento), anexa .deb e .ipa à Release do GitHub e atualiza o
+# repositório APT no GitHub Pages (Cydia, Sileo, Zebra).
+# "Run workflow" manual só compila e guarda os pacotes como artefato, sem publicar.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  THEOS: ${{ github.workspace }}/theos
+  THEOS_COMMIT: dd5c14bb9d91311e221d51b5bfb8c9e5948156db
+  TOOLCHAIN_URL: https://github.com/L1ghtmann/llvm-project/releases/download/test-210562a/iOSToolchain-x86_64.tar.xz
+  SDK: iPhoneOS12.4
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Confere a tag com o arquivo VERSION
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          expected="v$(cat VERSION)"
+          if [ "$GITHUB_REF_NAME" != "$expected" ]; then
+            echo "::error::A tag $GITHUB_REF_NAME não bate com VERSION ($expected)."
+            exit 1
+          fi
+
+      - name: Cache do Theos, da toolchain e do SDK
+        id: theos
+        uses: actions/cache@v4
+        with:
+          path: theos
+          key: theos-${{ env.THEOS_COMMIT }}-test-210562a-${{ env.SDK }}
+
+      - name: Instala o Theos, a toolchain e o SDK
+        if: steps.theos.outputs.cache-hit != 'true'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}  # install-sdk consulta a API do GitHub
+        run: |
+          git init -q "$THEOS"
+          git -C "$THEOS" remote add origin https://github.com/theos/theos.git
+          git -C "$THEOS" fetch -q --depth 1 origin "$THEOS_COMMIT"
+          git -C "$THEOS" checkout -q FETCH_HEAD
+          git -C "$THEOS" submodule update -q --init --recursive --depth 1
+          mkdir -p "$THEOS/toolchain"
+          curl -fsSL "$TOOLCHAIN_URL" | tar -xJ -C "$THEOS/toolchain"
+          "$THEOS/bin/install-sdk" "$SDK"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Dependências
+        run: pip install pillow
+
+      - name: Compila o app e os pacotes
+        run: |
+          tools/build-deb.sh
+          tools/build-app-deb.sh
+          tools/build-ipa.sh
+          python tools/build-repo.py site
+          ls -l packages
+
+      - name: Guarda os pacotes
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: packages/
+
+      - name: Prepara o site do repositório
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Publica a Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: packages/*
+          generate_release_notes: true
+          body: |
+            **Repositório para Cydia, Sileo e Zebra:** https://homerserejo.github.io/TecDuck/
+            (adicione também o do Polyfills: https://poomsmart.github.io/repo/).
+
+            - `com.romerson.tecduck_*.deb`: o app TecDuck, para instalar por loja de tweaks ou Filza.
+            - `com.romerson.tecfixes_*.deb`: TecDuck para Safari (opcional).
+            - `TecDuck_*.ipa`: o app para instalar com AppSync Unified, sem loja.
+
+  deploy:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: build
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.pages.outputs.page_url }}
+    steps:
+      - name: Publica o repositório no GitHub Pages
+        id: pages
+        uses: actions/deploy-pages@v4
