@@ -1,0 +1,132 @@
+[
+ {
+  "trigger": {
+   "url-filter": ".*",
+   "resource-type": [
+    "image",
+    "style-sheet",
+    "script",
+    "font",
+    "raw",
+    "svg-document",
+    "media",
+    "popup"
+   ]
+  },
+  "action": {
+   "type": "block"
+  }
+ },
+ {
+  "trigger": {
+   "url-filter": "^https?://[a-z0-9.-]*tecconcursos\\.com\\.br[:/]"
+  },
+  "action": {
+   "type": "ignore-previous-rules"
+  }
+ },
+ {
+  "trigger": {
+   "url-filter": "^https?://[a-z0-9.-]*amazonaws\\.com[:/]"
+  },
+  "action": {
+   "type": "ignore-previous-rules"
+  }
+ },
+ {
+  "trigger": {
+   "url-filter": "^https?://cdnjs\\.cloudflare\\.com/ajax/libs/mathjax/"
+  },
+  "action": {
+   "type": "ignore-previous-rules"
+  }
+ },
+ {
+  "trigger": {
+   "url-filter": "^https?://ajax\\.googleapis\\.com/ajax/libs/webfont/"
+  },
+  "action": {
+   "type": "ignore-previous-rules"
+  }
+ },
+ {
+  "trigger": {
+   "url-filter": "^https?://fonts\\.googleapis\\.com/"
+  },
+  "action": {
+   "type": "ignore-previous-rules"
+  }
+ },
+ {
+  "trigger": {
+   "url-filter": "^https?://fonts\\.gstatic\\.com/"
+  },
+  "action": {
+   "type": "ignore-previous-rules"
+  }
+ },
+ {
+  "trigger": {
+   "url-filter": "^https?://www\\.google\\.com/recaptcha/"
+  },
+  "action": {
+   "type": "ignore-previous-rules"
+  }
+ },
+ {
+  "trigger": {
+   "url-filter": "^https?://www\\.gstatic\\.com/recaptcha/"
+  },
+  "action": {
+   "type": "ignore-previous-rules"
+  }
+ },
+ {
+  "trigger": {
+   "url-filter": "^https?://www\\.recaptcha\\.net/recaptcha/"
+  },
+  "action": {
+   "type": "ignore-previous-rules"
+  }
+ },
+ {
+  "trigger": {
+   "url-filter": "^https?://[a-z0-9.-]*ytimg\\.com/"
+  },
+  "action": {
+   "type": "ignore-previous-rules"
+  }
+ },
+ {
+  "trigger": {
+   "url-filter": "^https?://www\\.youtube\\.com/"
+  },
+  "action": {
+   "type": "ignore-previous-rules"
+  }
+ },
+ {
+  "trigger": {
+   "url-filter": "^https?://[a-z0-9.-]*googlevideo\\.com/"
+  },
+  "action": {
+   "type": "ignore-previous-rules"
+  }
+ },
+ {
+  "trigger": {
+   "url-filter": "^data:"
+  },
+  "action": {
+   "type": "ignore-previous-rules"
+  }
+ },
+ {
+  "trigger": {
+   "url-filter": "^blob:"
+  },
+  "action": {
+   "type": "ignore-previous-rules"
+  }
+ }
+]

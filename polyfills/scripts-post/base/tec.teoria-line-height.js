@@ -4,6 +4,8 @@
 // rem / 1,1 (o texto base é 1,1rem), idêntico em 100% e proporcional à fonte com zoom.
 (function () {
   if (!/(^|\.)tecconcursos\.com\.br$/.test(location.hostname)) return;
+  // O app TecDuck injeta estes scripts e o tweak Polyfills também; roda uma vez só.
+  if (document.getElementById('tec-teoria-line-height')) return;
   var BASE_REM = 1.1;
   // Contêiner do texto -> seletor dos parágrafos (o nível de espaçamento vai no contêiner).
   var containers = {
