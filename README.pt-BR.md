@@ -14,7 +14,7 @@ compartilham as mesmas correções em JavaScript:
 
 | Problema no iOS 12 | Correção |
 |---|---|
-| Pastas e cadernos abrem em branco: `postMessage` sem `targetOrigin` lança erro e aborta o AngularJS | Polyfill que assume `'*'` como origem |
+| Pastas e cadernos abrem em branco: `postMessage` sem `targetOrigin` lança erro e aborta o AngularJS | Polyfill que assume `"/"` como origem (mesma origem, como na especificação) e aceita `{ targetOrigin, transfer }`; também proposto ao Polyfills |
 | Texto das aulas se sobrepõe com o zoom de texto do site (altura da linha fixa em `rem`) | Alturas de linha sem unidade, que acompanham a fonte |
 | Cada videoaula embute o player do YouTube (~18 MB de JS) | Cartão que abre o vídeo no Opaline (`ytlite://`) |
 | Banner de cookies em toda página | Respondido sozinho com "Somente essenciais", sem recarregar |
@@ -91,7 +91,7 @@ colaterais; o `tlsfix` não faz nada ali (o TLS roda no `com.apple.WebKit.Networ
   recurso bloqueado aparece no console como "Content blocker prevented…".
 - **Ícone**: troque [app/icon.png](app/icon.png) e rode `tools/make-icons.py`.
 - **Novas correções do site**: adicione um script em `polyfills/scripts-post/base/` (ou numa pasta de
-  versão como `scripts/13.0/`, aplicada quando o iOS é mais antigo que ela). O app e o `.deb` o
+  versão como `scripts/13.4/`, aplicada quando o iOS é mais antigo que ela). O app e o `.deb` o
   incluem.
 
 ## Diagnóstico

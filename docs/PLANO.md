@@ -34,7 +34,7 @@ cookie de sessão.
 ## Estrutura do repositório
 ```
 polyfills/                  # espelha /Library/Application Support/Polyfills
-  scripts/13.0/postMessage.targetOrigin.js
+  scripts/13.4/postMessage.options.js  # targetOrigin opcional ("/"), igual ao PR para o Polyfills
   scripts-post/base/tec.*.js  # otimizações do Tec; cada script checa o host *.tecconcursos.com.br
 packaging/                  # control, postinst e postrm do .deb
 app/                        # Fase 2: app TecDuck (Theos, Objective-C)
@@ -86,6 +86,15 @@ antigo que ela); por isso os scripts do Tec ficam em `base/` com prefixo `tec.` 
      o TLS fica no processo `com.apple.WebKit.Networking`) e, quanto menos dylibs, menos memória e risco.
    - Se o crash voltar: `pymobiledevice3 crash ls`/`crash pull --match WebContent`. A lista de
      *Binary Images* do relatório mostra exatamente quais tweaks estavam carregados.
+
+### Contribuição ao Polyfills (2026-10-04)
+O `targetOrigin` obrigatório não é só do iOS 12: até o WebKit 608 (iOS 13.3) ele é exigido, e a forma
+`postMessage(msg, { targetOrigin, transfer })` só chegou no WebKit 609 (iOS 13.4). A correção virou um
+polyfill genérico, proposto ao PoomSmart/Polyfills como `scripts/13.4/Window.postMessage.options.js`:
+padrão `"/"` (só a mesma origem, como na especificação; o `'*'` anterior entregava a qualquer origem),
+objeto de opções aceito e detecção por `postMessage.length`. Testado em 10 casos no iPad. Aqui ele vive
+como `postMessage.options.js`, com outro nome para não conflitar no dpkg com o pacote do Polyfills.
+As demais soluções (altura de linha, cookies, setas, Opaline, zoom) são específicas do Tec ou do app.
 
 ## Fase 2: app TecDuck (Theos no Linux)
 Feito em 2026-10-04; instalado no iPad e em uso.

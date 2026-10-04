@@ -14,7 +14,7 @@ share the same JavaScript fixes:
 
 | Problem on iOS 12 | Fix |
 |---|---|
-| Folders and notebooks open blank: `postMessage` without `targetOrigin` throws and aborts AngularJS | Polyfill that defaults the origin to `'*'` |
+| Folders and notebooks open blank: `postMessage` without `targetOrigin` throws and aborts AngularJS | Polyfill that defaults the origin to `"/"` (same origin, as in the spec) and accepts `{ targetOrigin, transfer }`; also proposed to Polyfills |
 | Lesson text overlaps with the site's text zoom (line height fixed in `rem`) | Unitless line heights that follow the font size |
 | Each video lesson embeds the YouTube player (~18 MB of JS) | Card that opens the video in Opaline (`ytlite://`) |
 | Cookie banner on every page | Answered automatically with "essential only", without a reload |
@@ -91,7 +91,7 @@ effects; `tlsfix` does nothing there (TLS runs in `com.apple.WebKit.Networking`)
   resource shows up in the console as "Content blocker prevented…".
 - **Icon**: replace [app/icon.png](app/icon.png) and run `tools/make-icons.py`.
 - **New site fixes**: add a script to `polyfills/scripts-post/base/` (or a version folder such as
-  `scripts/13.0/`, applied when iOS is older than it). Both the app and the `.deb` pick it up.
+  `scripts/13.4/`, applied when iOS is older than it). Both the app and the `.deb` pick it up.
 
 ## Debugging
 
