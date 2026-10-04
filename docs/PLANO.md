@@ -37,13 +37,16 @@ polyfills/                  # espelha /Library/Application Support/Polyfills
   scripts/13.0/postMessage.targetOrigin.js
   scripts-post/base/tec.*.js  # otimizações do Tec; cada script checa o host *.tecconcursos.com.br
 packaging/                  # control, postinst e postrm do .deb
+app/                        # Fase 2: app TecDuck (Theos, Objective-C)
+  Resources/content-rules.json  # allowlist de subrecursos (WKContentRuleList)
+  icon.png                  # fonte dos ícones (tools/make-icons.py)
 tools/
-  capture.py                # captura o console/rede do Safari pelo USB (pymobiledevice3)
+  capture.py                # console/rede do Safari ou do app pelo USB (pymobiledevice3)
   build-deb.sh              # empacota polyfills/ como .deb (dpkg-deb, no Linux)
-  install.sh                # envia o .deb pelo USB (AFC) para instalar no Filza/Sileo
+  build-ipa.sh              # compila app/ e gera o .ipa com polyfills/ dentro
+  install.sh                # .deb -> Media/Downloads (Filza); .ipa -> instalação direta (AppSync)
+  make-icons.py
   requirements.txt
-hosts/                      # bloqueio de rastreadores via /etc/hosts (opcional)
-app/                        # Fase 2: app Theos
 docs/PLANO.md
 ```
 O Polyfills só lê `base/` e pastas com nome de versão (`^\d+\.\d+$`, aplicadas quando o iOS é mais
@@ -84,17 +87,36 @@ antigo que ela); por isso os scripts do Tec ficam em `base/` com prefixo `tec.` 
    - Se o crash voltar: `pymobiledevice3 crash ls`/`crash pull --match WebContent`. A lista de
      *Binary Images* do relatório mostra exatamente quais tweaks estavam carregados.
 
-## Fase 2: app WebKit próprio (Theos no Linux)
-- **Toolchain:** Theos + toolchain iOS para Linux + SDK do `theos/sdks`; alvo `arm64`, iOS 12.0; assinatura
-  com `ldid` e instalação via AppSync (ou `.deb`).
-- **App:** um único `WKWebView` com homepage fixa; barra mínima (voltar, avançar, recarregar, Home);
-  `WKUserScript`s com os mesmos arquivos de `polyfills/` (sem depender do tweak); `WKContentRuleList`
-  com a allowlist (`www`/`cdn.tecconcursos.com.br`, `s3-sa-east-1.amazonaws.com`, MathJax no cdnjs, Google
-  Fonts, reCAPTCHA); política de navegação (Tec e reCAPTCHA ficam no app, YouTube vai para o Opaline,
-  o resto para o Safari); `webViewWebContentProcessDidTerminate` recarrega a página; cookies persistentes
-  (`WKWebsiteDataStore` padrão).
-- **Risco:** os tweaks são injetados no WebContent de **todos** os apps, não só do Safari. O tweak que
-  trava o login precisa ser desligado para o processo WebContent (Choicy → Daemons) ou removido.
+## Fase 2: app TecDuck (Theos no Linux)
+Feito em 2026-10-04; instalado no iPad e em uso.
+- **Toolchain:** Theos em `~/theos`, toolchain iOS para Linux do L1ghtmann (clang 11, ld64 e `ldid`
+  próprios, sem `sudo`) e o **SDK 12.4**, o último da série 12: o 12.5.x não teve SDK, e compilar contra
+  ele impede usar por engano uma API do iOS 13+. Alvo `arm64`, iOS 12.0. Sem `fakeroot`: o `.ipa` é
+  montado por `tools/build-ipa.sh`.
+- **Instalação:** `.ipa` com assinatura falsa do `ldid` (`get-task-allow`, para o Web Inspector) pelo
+  `installd` com AppSync Unified, direto do Linux (`pymobiledevice3 apps install`). Bundle
+  `com.romerson.tecduck`, nome **TecDuck**, ícone do Psyduck.
+- **App:** um `WKWebView` abrindo `/questoes/pastas`; barra ‹ › ⟳ Pastas; User-Agent com o sufixo do
+  Safari 12 (o Tec só trata como app dele o UA `tec-app…`); `alert`/`confirm`/`prompt` nativos;
+  `webViewWebContentProcessDidTerminate` recarrega; cookies no `WKWebsiteDataStore` padrão.
+  `UILaunchStoryboardName` sem storyboard basta para o app usar a tela inteira (768×1024).
+- **Scripts:** os arquivos de `polyfills/` vão dentro do app e são injetados com as regras do tweak
+  (`base/` + pastas de versão), cada um num `try/catch`. Como o tweak Polyfills também injeta no app,
+  os scripts do Tec são idempotentes.
+- **Zoom de 130%** (só no app): a meta viewport passa a `width=tela/1,3, initial-scale=1,3`; o WebKit
+  escala texto, botões e toques juntos, como o Ctrl + "+" do desktop. Abaixo de 768 px o Tec usa o
+  layout de celular, com swipe entre questões.
+- **Allowlist** (`content-rules.json`): bloqueia subrecursos fora de Tec, S3, MathJax, Google Fonts,
+  WebFont Loader, reCAPTCHA e miniaturas do YouTube. A navegação de topo fica no app só para Tec e
+  reCAPTCHA; YouTube vai para o Opaline e o resto para o Safari.
+- **Melhorias de uso** (valem também no Safari pelo `.deb`): banner de cookies respondido com
+  "Somente essenciais" sem recarregar; setas flutuantes ‹ › que acionam Anterior/Próxima da questão
+  visível; cartão do Opaline sem o fallback do player (que não carregava no app).
+- **Página de estrutura do curso:** 4.360 elementos, 3.721 watchers, `$digest` de 19 ms; o
+  `DOMContentLoaded` em 5,8 s é a execução dos 66 scripts do Tec. O observer do cartão do YouTube
+  fazia uma busca por nó inserido; uma varredura por lote resolveu o travamento percebido.
+- **Risco que segue:** os tweaks são injetados no WebContent de todos os apps; o crash do login não se
+  reproduziu (passo 5 da Fase 1).
 
 ## Verificação
 - Fase 1: com o `.deb` instalado, fazer login, abrir pastas, resolver 50 questões seguidas, abrir
