@@ -70,8 +70,19 @@ antigo que ela); por isso os scripts do Tec ficam em `base/` com prefixo `tec.` 
      cada atualização do site, e sem medição de memória que justifique. Reavaliar na Fase 2.
 4. **Rastreadores:** entradas em `/etc/hosts` (googletagmanager, google-analytics, doubleclick,
    activecampaign...). Nunca bloquear `www.google.com` nem `www.gstatic.com`, por causa do reCAPTCHA.
-5. **Isolar o tweak que trava o login** (ligar `tlsfix`, `libsonar` e `base_hook` um de cada vez), para
-   deixar a configuração do Choicy mínima e documentada.
+5. **Isolar o tweak que trava o login:** feito em 2026-10-04, sem reproduzir o crash.
+   - `libsonar` e `base_hook` ficam em `/usr/lib`, fora do `TweakInject`, e aparecem nos relatórios
+     ao lado do `dyld_patch`: são do jailbreak, não do Choicy. O Choicy só controla AppSync Unified,
+     Polyfills, Safari Plus e tlsfix.
+   - O crash é no processo `com.apple.WebKit.WebContent` (Choicy → Daemons), não no app Safari.
+     Login testado com Polyfills + tlsfix, Polyfills + Safari Plus e os três juntos: todos passaram.
+   - Os 25 relatórios de 02 e 03/10 têm a mesma assinatura (`EXC_BAD_ACCESS` em `libsystem_platform`
+     chamado pelo WebKit a partir de JS, endereço terminado em `…468`) e nenhum tweak na pilha.
+   - Em nenhum teste o reCAPTCHA mostrou o desafio de imagens; esse caminho segue sem teste.
+   - Configuração recomendada para o WebContent: **só o Polyfills**. O tlsfix não serve ali (no iOS 12
+     o TLS fica no processo `com.apple.WebKit.Networking`) e, quanto menos dylibs, menos memória e risco.
+   - Se o crash voltar: `pymobiledevice3 crash ls`/`crash pull --match WebContent`. A lista de
+     *Binary Images* do relatório mostra exatamente quais tweaks estavam carregados.
 
 ## Fase 2: app WebKit próprio (Theos no Linux)
 - **Toolchain:** Theos + toolchain iOS para Linux + SDK do `theos/sdks`; alvo `arm64`, iOS 12.0; assinatura
