@@ -18,7 +18,7 @@ share the same JavaScript fixes:
 | Lesson text overlaps with the site's text zoom (line height fixed in `rem`) | Unitless line heights that follow the font size |
 | Each video lesson embeds the YouTube player (~18 MB of JS) | Card that opens the video in Opaline (`ytlite://`) |
 | Cookie banner on every page | Answered automatically with "essential only", without a reload |
-| Previous/Next buttons are 40 px at the bottom of each question | Floating ‹ › arrows in the bottom corners |
+| "Random unsolved question" is a 40 px button at the bottom of each question (app only) | **Aleatória** button in the app's bottom bar |
 | Small text and buttons, no page zoom on iOS 12 (app only) | 130% page zoom through the viewport, like Ctrl + "+" |
 | Trackers and unused third-party requests (app only) | `WKContentRuleList` allowlist |
 

@@ -13,6 +13,7 @@ static const CGFloat kPageZoom = 1.3;
 @property (nonatomic, strong) UIToolbar *toolbar;
 @property (nonatomic, strong) UIBarButtonItem *backItem;
 @property (nonatomic, strong) UIBarButtonItem *forwardItem;
+@property (nonatomic, strong) UIBarButtonItem *randomItem;
 @end
 
 @implementation TWViewController
@@ -52,6 +53,7 @@ static const CGFloat kPageZoom = 1.3;
 
 	[self.webView addObserver:self forKeyPath:@"canGoBack" options:0 context:NULL];
 	[self.webView addObserver:self forKeyPath:@"canGoForward" options:0 context:NULL];
+	[self.webView addObserver:self forKeyPath:@"URL" options:0 context:NULL];
 
 	// A allowlist precisa estar ativa antes da primeira carga, senão a página inicial passa sem filtro.
 	[self installContentRulesInController:config.userContentController completion:^{
@@ -62,6 +64,7 @@ static const CGFloat kPageZoom = 1.3;
 - (void)dealloc {
 	[self.webView removeObserver:self forKeyPath:@"canGoBack"];
 	[self.webView removeObserver:self forKeyPath:@"canGoForward"];
+	[self.webView removeObserver:self forKeyPath:@"URL"];
 }
 
 - (void)buildToolbar {
@@ -73,6 +76,10 @@ static const CGFloat kPageZoom = 1.3;
 	self.forwardItem = [[UIBarButtonItem alloc] initWithTitle:@"›" style:UIBarButtonItemStylePlain target:self action:@selector(goForward)];
 	UIBarButtonItem *reload = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload)];
 	UIBarButtonItem *home = [[UIBarButtonItem alloc] initWithTitle:@"Pastas" style:UIBarButtonItemStylePlain target:self action:@selector(goHome)];
+	self.randomItem = [[UIBarButtonItem alloc] initWithTitle:@"Aleatória" style:UIBarButtonItemStylePlain target:self action:@selector(randomQuestion)];
+	self.randomItem.enabled = NO;
+	UIBarButtonItem *gap = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:NULL];
+	gap.width = 24;
 	UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:NULL];
 	NSDictionary *big = @{ NSFontAttributeName: [UIFont systemFontOfSize:34] };
 	for (UIBarButtonItem *item in @[ self.backItem, self.forwardItem ]) {
@@ -80,12 +87,13 @@ static const CGFloat kPageZoom = 1.3;
 		[item setTitleTextAttributes:big forState:UIControlStateDisabled];
 		item.enabled = NO;
 	}
-	self.toolbar.items = @[ self.backItem, flex, self.forwardItem, flex, reload, flex, home ];
+	self.toolbar.items = @[ self.backItem, flex, self.forwardItem, flex, reload, flex, self.randomItem, gap, home ];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 	self.backItem.enabled = self.webView.canGoBack;
 	self.forwardItem.enabled = self.webView.canGoForward;
+	self.randomItem.enabled = [self.webView.URL.path hasPrefix:@"/questoes/cadernos/"];
 }
 
 #pragma mark - Ações da barra
@@ -93,6 +101,21 @@ static const CGFloat kPageZoom = 1.3;
 - (void)goBack { [self.webView goBack]; }
 - (void)goForward { [self.webView goForward]; }
 - (void)reload { [self.webView reload]; }
+
+// "Questão aleatória não resolvida" (Tecla L) fica no fim de cada questão; na barra fica sempre à mão.
+// No layout estreito o swipe mantém questões vizinhas fora da tela, então vale o botão da visível.
+- (void)randomQuestion {
+	[self.webView evaluateJavaScript:
+		@"(function () {"
+		 "  var all = document.querySelectorAll('.questao-navegacao-botao-aleatoria');"
+		 "  for (var i = 0; i < all.length; i++) {"
+		 "    var box = all[i].getBoundingClientRect();"
+		 "    if (box.width && box.left >= 0 && box.left < window.innerWidth) { all[i].click(); return true; }"
+		 "  }"
+		 "  return false;"
+		 "})()"
+	               completionHandler:nil];
+}
 
 - (void)goHome {
 	[self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kHomeURL]]];

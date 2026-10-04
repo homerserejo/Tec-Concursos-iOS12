@@ -18,7 +18,7 @@ compartilham as mesmas correções em JavaScript:
 | Texto das aulas se sobrepõe com o zoom de texto do site (altura da linha fixa em `rem`) | Alturas de linha sem unidade, que acompanham a fonte |
 | Cada videoaula embute o player do YouTube (~18 MB de JS) | Cartão que abre o vídeo no Opaline (`ytlite://`) |
 | Banner de cookies em toda página | Respondido sozinho com "Somente essenciais", sem recarregar |
-| Anterior/Próxima são botões de 40 px no fim de cada questão | Setas ‹ › flutuantes nos cantos inferiores |
+| "Questão aleatória não resolvida" é um botão de 40 px no fim de cada questão (só no app) | Botão **Aleatória** na barra inferior do app |
 | Texto e botões pequenos, sem zoom de página no iOS 12 (só no app) | Zoom de 130% pela viewport, como o Ctrl + "+" |
 | Rastreadores e requisições de terceiros sem uso (só no app) | Allowlist com `WKContentRuleList` |
 

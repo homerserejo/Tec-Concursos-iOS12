@@ -94,7 +94,7 @@ polyfill genérico, proposto ao PoomSmart/Polyfills como `scripts/13.4/Window.po
 padrão `"/"` (só a mesma origem, como na especificação; o `'*'` anterior entregava a qualquer origem),
 objeto de opções aceito e detecção por `postMessage.length`. Testado em 10 casos no iPad. Aqui ele vive
 como `postMessage.options.js`, com outro nome para não conflitar no dpkg com o pacote do Polyfills.
-As demais soluções (altura de linha, cookies, setas, Opaline, zoom) são específicas do Tec ou do app.
+As demais soluções (altura de linha, cookies, Opaline, zoom) são específicas do Tec ou do app.
 
 ## Fase 2: app TecDuck (Theos no Linux)
 Feito em 2026-10-04; instalado no iPad e em uso.
@@ -105,7 +105,8 @@ Feito em 2026-10-04; instalado no iPad e em uso.
 - **Instalação:** `.ipa` com assinatura falsa do `ldid` (`get-task-allow`, para o Web Inspector) pelo
   `installd` com AppSync Unified, direto do Linux (`pymobiledevice3 apps install`). Bundle
   `com.romerson.tecduck`, nome **TecDuck**, ícone do Psyduck.
-- **App:** um `WKWebView` abrindo `/questoes/pastas`; barra ‹ › ⟳ Pastas; User-Agent com o sufixo do
+- **App:** um `WKWebView` abrindo `/questoes/pastas`; barra ‹ › ⟳ Aleatória Pastas (Aleatória aciona "Questão aleatória
+  não resolvida" da questão visível e só fica ativo nos cadernos); User-Agent com o sufixo do
   Safari 12 (o Tec só trata como app dele o UA `tec-app…`); `alert`/`confirm`/`prompt` nativos;
   `webViewWebContentProcessDidTerminate` recarrega; cookies no `WKWebsiteDataStore` padrão.
   `UILaunchStoryboardName` sem storyboard basta para o app usar a tela inteira (768×1024).
@@ -119,8 +120,8 @@ Feito em 2026-10-04; instalado no iPad e em uso.
   WebFont Loader, reCAPTCHA e miniaturas do YouTube. A navegação de topo fica no app só para Tec e
   reCAPTCHA; YouTube vai para o Opaline e o resto para o Safari.
 - **Melhorias de uso** (valem também no Safari pelo `.deb`): banner de cookies respondido com
-  "Somente essenciais" sem recarregar; setas flutuantes ‹ › que acionam Anterior/Próxima da questão
-  visível; cartão do Opaline sem o fallback do player (que não carregava no app).
+  "Somente essenciais" sem recarregar; cartão do Opaline sem o fallback do player (que não carregava
+  no app). As setas flutuantes ‹ › foram testadas e removidas: ficavam onde os dedos tocam sem querer.
 - **Página de estrutura do curso:** 4.360 elementos, 3.721 watchers, `$digest` de 19 ms; o
   `DOMContentLoaded` em 5,8 s é a execução dos 66 scripts do Tec. O observer do cartão do YouTube
   fazia uma busca por nó inserido; uma varredura por lote resolveu o travamento percebido.
