@@ -26,27 +26,35 @@ cookie de sessão.
 | Tema | Decisão |
 |---|---|
 | Entrega | Fase 1: scripts do Polyfills no Safari. Fase 2: app WebKit próprio (Theos, compilado no Linux) reaproveitando os mesmos scripts |
-| Repositório | [homerserejo/Tec-Concursos-iOS12](https://github.com/homerserejo/Tec-Concursos-iOS12) (GPL-2.0); o Tec-Blinker e a VM ficam parados como plano B |
+| Repositório | [homerserejo/TecDuck](https://github.com/homerserejo/TecDuck) (GPL-2.0; antes Tec-Concursos-iOS12); o Tec-Blinker e a VM ficam parados como plano B |
 | Vídeos do YouTube | Abrir no Opaline: `ytlite://watch?v=<ID>[&t=<s>]` |
 | Commits | Autoria só de **Romerson Serejo**; sem `Co-Authored-By` do Claude, sem URL de sessão |
 | Mensagens de commit e PR | Narrativa do porquê: o problema, a intenção e o que a mudança corrigiu. Não listar o que foi feito; o diff já mostra |
 
 ## Estrutura do repositório
 ```
+VERSION                     # versão única dos dois pacotes e do app (tag v<VERSION>)
 polyfills/                  # espelha /Library/Application Support/Polyfills
   scripts/13.4/postMessage.options.js  # targetOrigin opcional ("/"), igual ao PR para o Polyfills
   scripts-post/base/tec.*.js  # otimizações do Tec; cada script checa o host *.tecconcursos.com.br
-packaging/                  # control, postinst e postrm do .deb
-app/                        # Fase 2: app TecDuck (Theos, Objective-C)
+app/                        # app TecDuck (Theos, Objective-C)
   Resources/content-rules.json  # allowlist de subrecursos (WKContentRuleList)
   icon.png                  # fonte dos ícones (tools/make-icons.py)
+packaging/
+  tecduck/  tecfixes/       # control (@VERSION@, @REPO_URL@), postinst, postrm de cada .deb
+  repo/                     # página inicial e descrições do repositório APT
 tools/
   capture.py                # console/rede do Safari ou do app pelo USB (pymobiledevice3)
-  build-deb.sh              # empacota polyfills/ como .deb (dpkg-deb, no Linux)
-  build-ipa.sh              # compila app/ e gera o .ipa com polyfills/ dentro
+  stage-app.sh              # compila app/ e monta o TecDuck.app (scripts, versão, ldid)
+  build-app-deb.sh          # .deb do app em /Applications (lojas de tweaks)
+  build-ipa.sh              # .ipa do app (AppSync)
+  build-deb.sh              # .deb "TecDuck para Safari"
+  deb-control.sh            # preenche o control de packaging/<pacote>/
+  build-repo.py             # repositório APT: Packages, Release, ícone, páginas
   install.sh                # .deb -> Media/Downloads (Filza); .ipa -> instalação direta (AppSync)
   make-icons.py
   requirements.txt
+.github/workflows/release.yml  # tag v* -> Release com .deb/.ipa + repositório no GitHub Pages
 docs/PLANO.md
 ```
 O Polyfills só lê `base/` e pastas com nome de versão (`^\d+\.\d+$`, aplicadas quando o iOS é mais
@@ -127,6 +135,18 @@ Feito em 2026-10-04; instalado no iPad e em uso.
   fazia uma busca por nó inserido; uma varredura por lote resolveu o travamento percebido.
 - **Risco que segue:** os tweaks são injetados no WebContent de todos os apps; o crash do login não se
   reproduziu (passo 5 da Fase 1).
+
+## Release 1.0.0 (2026-10-04)
+- **Distribuição:** repositório APT no GitHub Pages (`https://homerserejo.github.io/TecDuck/`) para
+  Cydia, Sileo e Zebra. O app vira o pacote `com.romerson.tecduck`, instalado em `/Applications`, sem
+  AppSync; `Depends: com.ps.polyfills` faz a loja instalar o Polyfills junto, desde que o repositório do
+  PoomSmart esteja adicionado (a página do repositório pede isso primeiro). O `.ipa` segue na Release
+  para quem usa AppSync; os dois têm o mesmo identificador, então só um pode estar instalado.
+- **Numeração zerada:** 1.0.0 em `VERSION`, fonte única para os dois `.deb`, o `Info.plist` e a tag.
+- **Pipeline:** `.github/workflows/release.yml` compila no Ubuntu com o Theos fixo no commit
+  `dd5c14bb`, a toolchain `test-210562a` e o SDK 12.4 (o mesmo do desenvolvimento, conferido com um
+  build local nessas condições), publica a Release e o Pages. Falha se a tag não bater com `VERSION`.
+- **Nome:** o repositório passa a se chamar TecDuck.
 
 ## Verificação
 - Fase 1: com o `.deb` instalado, fazer login, abrir pastas, resolver 50 questões seguidas, abrir

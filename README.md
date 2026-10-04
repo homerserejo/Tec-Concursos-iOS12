@@ -1,4 +1,4 @@
-# Tec-Concursos-iOS12
+# TecDuck
 
 **English** · [Português](README.pt-BR.md)
 
@@ -6,9 +6,20 @@ Makes [Tec Concursos](https://www.tecconcursos.com.br) usable on a jailbroken iP
 (tested on an iPad mini 2, A7, 1 GB RAM, iOS 12.5.8, Amethyst jailbreak). It ships two things that
 share the same JavaScript fixes:
 
-- **TecDuck**: a single-purpose WebKit app built on Linux with Theos.
-- **Tec Fixes** (`com.romerson.tecfixes`): a `.deb` that adds the same fixes to Safari through the
-  Polyfills tweak.
+- **TecDuck** (`com.romerson.tecduck`): a single-purpose WebKit app built on Linux with Theos.
+- **TecDuck for Safari** (`com.romerson.tecfixes`): the same fixes in Safari through the Polyfills
+  tweak.
+
+## Install
+
+In Cydia, Sileo or Zebra, add these two sources, then install **TecDuck**:
+
+1. `https://poomsmart.github.io/repo/` (Polyfills, a dependency the package manager installs for you);
+2. `https://homerserejo.github.io/TecDuck/`, or open that address on the iPad for one-tap buttons.
+
+Each [release](https://github.com/homerserejo/TecDuck/releases) also carries the `.deb` files and a
+`TecDuck_<version>.ipa` for AppSync Unified. The `.deb` and the `.ipa` share the bundle ID: delete
+one before installing the other.
 
 ## What it fixes
 
@@ -24,23 +35,20 @@ share the same JavaScript fixes:
 
 ## Requirements
 
-**iPad**: jailbroken iOS 12 with these packages:
-
-- [AppSync Unified](https://github.com/akemin-dayo/AppSync), to install the fakesigned app;
-- [Polyfills](https://poomsmart.github.io/repo/depictions/polyfills.html), for the Safari package (optional for the app);
-- Opaline (optional), to watch the lessons' videos;
-- Filza (optional), to install the `.deb` from Downloads.
+**iPad**: jailbroken iOS 12 with [Polyfills](https://poomsmart.github.io/repo/depictions/polyfills.html);
+Filza to install a `.deb` from Downloads, or [AppSync Unified](https://github.com/akemin-dayo/AppSync)
+for the `.ipa`; Opaline (optional) for the lessons' videos.
 
 **Linux computer** (x86_64): `git`, `curl`, `make`, `python3`, `dpkg-deb`, `zip`; `node` is optional
 (syntax check of the scripts). No `sudo` needed. Connect the iPad by USB and tap "Trust".
 
-## Tutorial
+## Building from source
 
 ### 1. Clone and prepare the USB tools
 
 ```bash
-git clone https://github.com/homerserejo/Tec-Concursos-iOS12.git
-cd Tec-Concursos-iOS12
+git clone https://github.com/homerserejo/TecDuck.git
+cd TecDuck
 python3 -m venv .venv
 .venv/bin/pip install -r tools/requirements.txt
 source .venv/bin/activate   # puts pymobiledevice3 on PATH
@@ -63,8 +71,10 @@ iOS 13+ APIs by mistake. Add `export THEOS=~/theos` to your shell profile.
 ### 3. Build and install TecDuck
 
 ```bash
-tools/build-ipa.sh                          # -> packages/TecDuck_<version>.ipa
-tools/install.sh packages/TecDuck_*.ipa     # installs over USB through AppSync
+tools/build-app-deb.sh    # -> packages/com.romerson.tecduck_<version>_iphoneos-arm.deb
+tools/build-ipa.sh        # -> packages/TecDuck_<version>.ipa
+tools/install.sh packages/com.romerson.tecduck_*.deb   # copies to Downloads; install with Filza
+tools/install.sh packages/TecDuck_*.ipa                # or: installs over USB through AppSync
 ```
 
 Open **TecDuck** on the iPad and log in. Tec and reCAPTCHA pages stay in the app, YouTube links go to
@@ -83,6 +93,21 @@ On the iPad, open the `.deb` in Filza and install it. Safari is closed so the sc
 Tweaks are injected into the web content process of every app. In Choicy → Daemons →
 `com.apple.WebKit.WebContent`, keeping only **Polyfills** enabled saves memory and avoids side
 effects; `tlsfix` does nothing there (TLS runs in `com.apple.WebKit.Networking`).
+
+## Releasing
+
+The version lives in [VERSION](VERSION); the build scripts write it into both packages and the app.
+
+```bash
+echo 1.0.1 > VERSION
+git commit -am "..." && git tag v1.0.1 && git push && git push --tags
+```
+
+The [Release workflow](.github/workflows/release.yml) builds on Ubuntu with the same Theos commit,
+toolchain and SDK, attaches the `.deb` and `.ipa` files to the GitHub Release and publishes the APT
+repository (`tools/build-repo.py`) to GitHub Pages. It fails if the tag doesn't match `VERSION`.
+Once per repository: Settings → Pages → Source: **GitHub Actions**. Running the workflow by hand
+only builds and keeps the packages as an artifact.
 
 ## Customizing
 
