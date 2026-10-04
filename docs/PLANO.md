@@ -49,7 +49,7 @@ tools/
   stage-app.sh              # compila app/ e monta o TecDuck.app (scripts, versão, ldid)
   build-app-deb.sh          # .deb do app em /Applications (lojas de tweaks)
   build-ipa.sh              # .ipa do app (AppSync)
-  build-deb.sh              # .deb "TecDuck para Safari"
+  build-deb.sh              # .deb "TecDuck for Safari"
   deb-control.sh            # preenche o control de packaging/<pacote>/
   build-repo.py             # repositório APT: Packages, Release, ícone, páginas
   install.sh                # .deb -> Media/Downloads (Filza); .ipa -> instalação direta (AppSync)

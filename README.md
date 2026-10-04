@@ -2,7 +2,9 @@
 
 **English** · [Português](README.pt-BR.md)
 
-Makes [Tec Concursos](https://www.tecconcursos.com.br) usable on a jailbroken iPad stuck on iOS 12
+[Tec Concursos](https://www.tecconcursos.com.br) is a Brazilian study site for public service exams
+(*concursos públicos*), with question banks, notebooks and video lessons. This project makes it
+usable on a jailbroken iPad stuck on iOS 12
 (tested on an iPad mini 2, A7, 1 GB RAM, iOS 12.5.8, Amethyst jailbreak). It ships two things that
 share the same JavaScript fixes:
 

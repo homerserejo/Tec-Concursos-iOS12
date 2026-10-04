@@ -113,12 +113,14 @@ jobs:
           overwrite_files: true
           generate_release_notes: true
           body: |
-            **Repositório para Cydia, Sileo e Zebra:** https://homerserejo.github.io/tecduck/
-            (adicione também o do Polyfills: https://poomsmart.github.io/repo/).
+            TecDuck: [Tec Concursos](https://www.tecconcursos.com.br), a Brazilian study site for public service exams, made fast and usable on iOS 12.
 
-            - `com.romerson.tecduck_*.deb`: o app TecDuck, para instalar por loja de tweaks ou Filza.
-            - `com.romerson.tecfixes_*.deb`: TecDuck para Safari (opcional).
-            - `TecDuck_*.ipa`: o app para instalar com AppSync Unified, sem loja.
+            **Source for Cydia, Sileo and Zebra · Fonte para Cydia, Sileo e Zebra:** https://homerserejo.github.io/tecduck/
+            (also add Polyfills · adicione também o Polyfills: https://poomsmart.github.io/repo/).
+
+            - `com.romerson.tecduck_*.deb`: the TecDuck app, for package managers or Filza · o app, para lojas de tweaks ou Filza.
+            - `com.romerson.tecfixes_*.deb`: TecDuck for Safari (optional · opcional).
+            - `TecDuck_*.ipa`: the app for AppSync Unified, no package manager · o app para AppSync Unified, sem loja.
 
   deploy:
     if: startsWith(github.ref, 'refs/tags/') || (inputs.publish && github.ref == 'refs/heads/main')

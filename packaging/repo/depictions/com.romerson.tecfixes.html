@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TecDuck para Safari</title>
+<title>TecDuck for Safari</title>
 <style>
 body{margin:0;background:#f2f2f7;color:#1c1c1e;font:16px/1.5 -apple-system,Helvetica,Arial,sans-serif}
 main{max-width:640px;margin:0 auto;padding:16px}
@@ -16,11 +16,25 @@ a.alt{background:#e5e5ea;color:#007aff}
 code{background:#e5e5ea;border-radius:4px;padding:1px 4px;font-size:14px;word-break:break-all}
 ul{padding-left:20px;margin:4px 0}li{margin:4px 0}
 </style>
+<style>.lang{font-size:13px;font-weight:600;color:#6e6e73;text-transform:uppercase;letter-spacing:.05em;margin:24px 4px 0}</style>
 </head>
 <body>
 <main>
+  <div class="lang">English</div>
   <div class="card">
-    <p>As correções do TecDuck no <b>Safari</b>, como scripts do Polyfills. Só vale no domínio do Tec Concursos, exceto a correção do <code>postMessage</code>, que ajuda qualquer site.</p>
+    <p>The TecDuck fixes for <b>Safari</b>, as Polyfills scripts, for <b>Tec Concursos</b>, a Brazilian study site for public service exams. They only run on Tec Concursos, except the <code>postMessage</code> fix, which helps any site.</p>
+    <ul>
+      <li>Folders and notebooks that opened blank work again.</li>
+      <li>Video lessons open in Opaline.</li>
+      <li>Cookie banner answered with "essential only".</li>
+      <li>Lesson text no longer overlaps with the site's text zoom.</li>
+    </ul>
+    <p class="muted">Page zoom and the Aleatória button are only in the TecDuck app.</p>
+  </div>
+
+  <div class="lang">Português</div>
+  <div class="card">
+    <p>As correções do TecDuck no <b>Safari</b>, como scripts do Polyfills. Só valem no domínio do Tec Concursos, exceto a correção do <code>postMessage</code>, que ajuda qualquer site.</p>
     <ul>
       <li>Pastas e cadernos que abriam em branco voltam a funcionar.</li>
       <li>Videoaulas abrem no Opaline.</li>
@@ -29,11 +43,12 @@ ul{padding-left:20px;margin:4px 0}li{margin:4px 0}
     </ul>
     <p class="muted">O zoom de página e o botão Aleatória são só do app TecDuck.</p>
   </div>
+
   <div class="card">
-    <h2>Novidades da @VERSION@</h2>
-    <p class="muted">Primeira versão publicada.</p>
+    <h2>@VERSION@</h2>
+    <p class="muted">First public release · Primeira versão publicada.</p>
   </div>
-  <p class="muted">Sem vínculo com o Tec Concursos. <a href="https://github.com/homerserejo/tecduck">Código-fonte</a> · GPL-2.0</p>
+  <p class="muted">Not affiliated with Tec Concursos · Sem vínculo com o Tec Concursos. <a href="https://github.com/homerserejo/tecduck">Source code</a> · GPL-2.0</p>
 </main>
 </body>
 </html>

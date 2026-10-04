@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Empacota polyfills/ como o .deb "TecDuck para Safari", que instala os scripts em
+# Empacota polyfills/ como o .deb "TecDuck for Safari", que instala os scripts em
 # /Library/Application Support/Polyfills (pacote com.ps.polyfills).
 # Uso: tools/build-deb.sh  ->  packages/com.romerson.tecfixes_<versão>_iphoneos-arm.deb
 set -euo pipefail

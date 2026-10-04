@@ -2,7 +2,7 @@ Package: com.romerson.tecduck
 Name: TecDuck
 Version: @VERSION@
 Architecture: iphoneos-arm
-Description: Navegador leve para o Tec Concursos no iOS 12, com zoom de página, botão de questão aleatória, vídeos no Opaline e só os recursos de que o site precisa.
+Description: Lightweight browser for Tec Concursos, a Brazilian exam-prep study site, on iOS 12: page zoom, random-question button, videos in Opaline and only what the site needs. / Navegador leve para o Tec Concursos no iOS 12.
 Maintainer: Romerson Serejo
 Author: Romerson Serejo
 Section: Utilities

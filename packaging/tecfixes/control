@@ -1,8 +1,8 @@
 Package: com.romerson.tecfixes
-Name: TecDuck para Safari
+Name: TecDuck for Safari
 Version: @VERSION@
 Architecture: iphoneos-arm
-Description: Correções do Tec Concursos para o Safari do iOS 12: cadernos que abriam em branco, texto das aulas sobreposto com zoom, vídeos no Opaline e cookies só essenciais.
+Description: Fixes Tec Concursos, a Brazilian exam-prep study site, in Safari on iOS 12: blank notebooks, overlapping lesson text with zoom, videos in Opaline and essential-only cookies. / Correções do Tec Concursos para o Safari do iOS 12.
 Maintainer: Romerson Serejo
 Author: Romerson Serejo
 Section: Tweaks

@@ -7,7 +7,7 @@ Deixa o [Tec Concursos](https://www.tecconcursos.com.br) usável num iPad com ja
 compartilham as mesmas correções em JavaScript:
 
 - **TecDuck** (`com.romerson.tecduck`): um app WebKit de propósito único, compilado no Linux com o Theos.
-- **TecDuck para Safari** (`com.romerson.tecfixes`): as mesmas correções no Safari, pelo tweak
+- **TecDuck for Safari** (`com.romerson.tecfixes`): as mesmas correções no Safari, pelo tweak
   Polyfills.
 
 ## Instalar
