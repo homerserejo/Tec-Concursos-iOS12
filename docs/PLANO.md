@@ -59,12 +59,15 @@ antigo que ela); por isso os scripts do Tec ficam em `base/` com prefixo `tec.` 
    estatísticas → aula. Cada erro novo é capturado com `capture.py` e vira um script em
    `polyfills/` com um comentário explicando a causa.
 3. **Otimizações (scripts restritos ao host do Tec):**
-   - Aulas: trocar cada `iframe` do `youtube.com/embed/<ID>` por um botão "Abrir no Opaline"
-     (`ytlite://`). Corta ~18 MB de JS e o vídeo por aula. Verificar se o Tec ainda marca a aula como vista.
-   - Consentimento de cookies: recusar Análise e Marketing (`/cookie-consent/salvar`), para o servidor
-     parar de injetar GTM e remarketing.
-   - Experimento: impedir que CKEditor, Jodit e Chart.js carreguem na página de pastas. Fica só se não
-     quebrar o AngularJS; medir antes e depois.
+   - Aulas: feito em `tec.youtube-opaline.js`. Cada `iframe` do `youtube.com/embed/<ID>` vira um cartão
+     "Abrir no Opaline" (`ytlite://`), com "Carregar o player aqui" como alternativa. O Tec não acompanha
+     o progresso do vídeo (o player só recebe `setPlaybackRate`), então nada se perde.
+   - Consentimento de cookies: já resolvido na conta. Uma captura completa de aula (2026-10-03) só
+     acessa Tec, S3, cdnjs e Google Fonts; nada de GTM nem remarketing.
+   - Bloquear CKEditor, Jodit e Chart.js: **descartado**. `tec.questao` depende do módulo `chart.js`
+     (sem Chart.js o AngularJS não inicia), e CKEditor/Jodit são chamados de forma síncrona pelos
+     editores de comentários, post-its, anotações e fórum. Só valeria com carga sob demanda, frágil a
+     cada atualização do site, e sem medição de memória que justifique. Reavaliar na Fase 2.
 4. **Rastreadores:** entradas em `/etc/hosts` (googletagmanager, google-analytics, doubleclick,
    activecampaign...). Nunca bloquear `www.google.com` nem `www.gstatic.com`, por causa do reCAPTCHA.
 5. **Isolar o tweak que trava o login** (ligar `tlsfix`, `libsonar` e `base_hook` um de cada vez), para
