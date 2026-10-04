@@ -9,8 +9,8 @@ Requisitos: `pip install -r tools/requirements.txt`; iPad ligado pelo USB e
 confiando no computador; Ajustes > Safari > Avançado > Web Inspector ligado;
 a aba do Tec aberta no Safari.
 
-Atenção: um fetch/XHR disparado por --eval deixa o inspetor do iOS 12 sem resposta até
-reiniciar o Safari. Para ler um CSS/JS do site, baixe com curl usando o User-Agent do Safari.
+Para ler um CSS/JS do site, baixe com curl usando o User-Agent do Safari (sem ele o servidor
+responde 403). Use --match 'TecDuck(' para inspecionar o app TecDuck em vez do Safari.
 
 Uso: tools/capture.py [--wait 25] [--no-reload] [--all-requests] [--eval JS|@arquivo.js [--settle 5]] [--match tecconcursos]
 """
@@ -72,6 +72,9 @@ class Capture:
                 "Network.requestWillBeSent": guarded(self.request),
                 "Network.responseReceived": guarded(self.response),
                 "Network.loadingFailed": guarded(self.failed),
+                # O handler da biblioteca relê a última mensagem guardada por ela, que fica vazia
+                # porque o console é tratado aqui; o KeyError derrubava o laço de recepção.
+                "Console.messageRepeatCountUpdated": guarded(self.repeated),
             }
         )
         # Eventos de rede sem interesse; sem handler, a biblioteca os despeja inteiros no log.
@@ -103,6 +106,9 @@ class Capture:
         if body.get("url"):
             where = f"  [{short(body['url'])}:{body.get('line', '?')}:{body.get('column', '?')}]"
         print(f"console.{body.get('level', 'log')}: {text}{where}", flush=True)
+
+    def repeated(self, message: dict) -> None:
+        print(f"console: (última mensagem repetida {message['params'].get('count', '?')}x)", flush=True)
 
     def request(self, message: dict) -> None:
         params = message["params"]

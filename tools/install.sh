@@ -1,11 +1,20 @@
 #!/usr/bin/env bash
-# Gera o .deb e o envia pelo USB (AFC) para Media/Downloads do iPad.
-# No iPad: Filza > /var/mobile/Media/Downloads > tocar no .deb > Instalar.
-# Uso: tools/install.sh [arquivo.deb]
+# Envia ao iPad pelo USB.
+#   .deb (padrão, gerado na hora): vai para Media/Downloads; instalar pelo Filza.
+#   .ipa: instalado direto pelo installd (o AppSync Unified aceita a assinatura do ldid).
+# Uso: tools/install.sh [arquivo.deb|arquivo.ipa]
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
-deb="${1:-$("$root/tools/build-deb.sh")}"
+pkg="${1:-$("$root/tools/build-deb.sh")}"
 
-pymobiledevice3 afc push "$deb" "Downloads/$(basename "$deb")"
-echo "enviado: /var/mobile/Media/Downloads/$(basename "$deb")"
+case "$pkg" in
+  *.ipa)
+    pymobiledevice3 apps install "$pkg"
+    echo "instalado: $(basename "$pkg")"
+    ;;
+  *)
+    pymobiledevice3 afc push "$pkg" "Downloads/$(basename "$pkg")"
+    echo "enviado: /var/mobile/Media/Downloads/$(basename "$pkg")"
+    ;;
+esac
